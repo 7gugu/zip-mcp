@@ -1,0 +1,31 @@
+{
+  "name": "zip-mcp",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol server for ZIP compression using fastMCP and zip.js",
+  "scripts": {
+    "start": "npx tsx src/index.ts",
+    "json": "npx tsx scripts/generateMcpConfig.ts"
+  },
+  "dependencies": {
+    "@zip.js/zip.js": "^2.7.57",
+    "fastmcp": "^1.20.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "tsx": "^4.19.3",
+    "typescript": "^4.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/7gugu/zip-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "server",
+    "typescript",
+    "compression",
+    "zip"
+  ],
+  "author": "7gugu",
+  "license": "MIT"
+}

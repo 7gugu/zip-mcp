@@ -1,5 +1,7 @@
 # ZIP MCP Server
 
+中文 | [English](README.md)
+
 ## 项目简介
 
 ZIP MCP Server 是一个基于 fastMCP 和 zip.js 的压缩服务器，实现了 Model Context Protocol (MCP) 协议。本项目提供了全参数可控的 ZIP 压缩、解压缩和查询压缩包信息功能。

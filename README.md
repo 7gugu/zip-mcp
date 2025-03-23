@@ -1,48 +1,48 @@
 # ZIP MCP Server
 
-## 项目简介
+## Project Introduction
 
-ZIP MCP Server 是一个基于 fastMCP 和 zip.js 的压缩服务器，实现了 Model Context Protocol (MCP) 协议。本项目提供了全参数可控的 ZIP 压缩、解压缩和查询压缩包信息功能。
+ZIP MCP Server is a compression server based on fastMCP and zip.js, implementing the Model Context Protocol (MCP). This project provides fully parameter-controlled ZIP compression, decompression, and query compression package information functions.
 
-## 功能特点
+## Features
 
-- 支持文件和数据的压缩与解压缩
-- 支持多文件打包压缩
-- 提供压缩级别控制 (0-9)
-- 支持密码保护和加密强度设置
-- 提供压缩包元数据查询功能
+- Supports compression and decompression of files and data
+- Supports multi-file packaging compression
+- Provides compression level control (0-9)
+- Supports password protection and encryption strength settings
+- Provides query function for compressed package metadata
 
-## 项目结构
+## Project Structure
 
 ```
 zip-mcp
 ├── src
-│   ├── index.ts               # 应用程序入口点
+│   ├── index.ts               # Application entry point
 │   ├── utils
-│   │   └── compression.ts     # 压缩和解压缩功能实现
+│   │   └── compression.ts     # Compression and decompression implementation
 │   └── types
-│       └── index.ts           # 类型定义
-├── tsconfig.json              # TypeScript配置文件
-├── package.json               # npm配置文件
-└── README.md                  # 项目文档
+│       └── index.ts           # Type definitions
+├── tsconfig.json              # TypeScript configuration file
+├── package.json               # npm configuration file
+└── README.md                  # Project documentation
 ```
 
-## 安装与使用
+## Installation and Usage
 
-1. 克隆项目：
+1. Clone the project:
 
    ```bash
    git clone <repository-url>
    cd zip-mcp
    ```
 
-2. 安装依赖：
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-3. 生成 MCP JSON：
+3. Generate MCP JSON:
 
     ```bash
     npm run json
@@ -62,102 +62,102 @@ zip-mcp
     }
     ```
 
-4. 将 MCP JSON 配置到 AI Client 中
+4. Configure the MCP JSON in the AI Client
 
 - Claude Client https://modelcontextprotocol.io/quickstart/user
-- Raycast 需要安装 MCP 插件
+- Raycast requires installing the MCP plugin
 
-## MCP 工具说明
+## MCP Tool Description
 
-ZIP MCP Server 提供了以下工具，可通过 MCP 协议调用：
+ZIP MCP Server provides the following tools, which can be called through the MCP protocol:
 
-### 压缩工具 (compress)
+### Compression Tool (compress)
 
-将本地文件或目录压缩为 ZIP 文件。
+Compress local files or directories into a ZIP file.
 
-**参数:**
+**Parameters:**
 
-- `input`: 要压缩的文件或目录路径（字符串或字符串数组）
-- `output`: 输出 ZIP 文件的路径
-- `options`: 压缩选项（可选）
-  - `level`: 压缩级别 (0-9，默认为 5)
-  - `password`: 密码保护
-  - `encryptionStrength`: 加密强度 (1-3)
-  - `overwrite`: 是否覆盖现有文件 (布尔值)
+- `input`: Path of the file or directory to be compressed (string or string array)
+- `output`: Path of the output ZIP file
+- `options`: Compression options (optional)
+  - `level`: Compression level (0-9, default is 5)
+  - `password`: Password protection
+  - `encryptionStrength`: Encryption strength (1-3)
+  - `overwrite`: Whether to overwrite existing files (boolean)
 
-**返回:**
+**Returns:**
 
-- 成功: 包含成功信息的文本内容
-- 失败: 包含错误信息的文本内容
+- Success: Text content containing success information
+- Failure: Text content containing error information
 
-### 解压工具 (decompress)
+### Decompression Tool (decompress)
 
-解压本地 ZIP 文件到指定目录。
+Decompress local ZIP files to the specified directory.
 
-**参数:**
+**Parameters:**
 
-- `input`: ZIP 文件路径
-- `output`: 输出目录路径
-- `options`: 解压选项（可选）
-  - `password`: 解压密码
-  - `overwrite`: 是否覆盖现有文件 (布尔值)
-  - `createDirectories`: 是否创建不存在的目录 (布尔值)
+- `input`: Path of the ZIP file
+- `output`: Path of the output directory
+- `options`: Decompression options (optional)
+  - `password`: Decompression password
+  - `overwrite`: Whether to overwrite existing files (boolean)
+  - `createDirectories`: Whether to create non-existent directories (boolean)
 
-**返回:**
+**Returns:**
 
-- 成功: 包含解压结果信息的文本内容
-- 失败: 包含错误信息的文本内容
+- Success: Text content containing decompression result information
+- Failure: Text content containing error information
 
-### ZIP 信息工具 (getZipInfo)
+### ZIP Info Tool (getZipInfo)
 
-获取本地 ZIP 文件的元数据信息。
+Get metadata information of local ZIP files.
 
-**参数:**
+**Parameters:**
 
-- `input`: ZIP 文件路径
-- `options`: 选项（可选）
-  - `password`: 解压密码
+- `input`: Path of the ZIP file
+- `options`: Options (optional)
+  - `password`: Decompression password
 
-**返回:**
+**Returns:**
 
-- 成功: 包含 ZIP 文件详细信息的文本内容，包括：
-  - 总文件数
-  - 总大小
-  - 压缩后大小
-  - 压缩率
-  - 每个文件的详细信息
-- 失败: 包含错误信息的文本内容
+- Success: Text content containing detailed information of the ZIP file, including:
+  - Total number of files
+  - Total size
+  - Compressed size
+  - Compression ratio
+  - Detailed information of each file
+- Failure: Text content containing error information
 
-### 测试工具 (echo)
+### Test Tool (echo)
 
-返回输入的消息，用于测试服务是否正常运行。
+Returns the input message to test if the service is running normally.
 
-**参数:**
+**Parameters:**
 
-- `message`: 要返回的消息
+- `message`: Message to be returned
 
-**返回:**
+**Returns:**
 
-- 包含输入消息和当前时间戳的文本内容
+- Text content containing the input message and current timestamp
 
-## 示例
+## Examples
 
-使用 MCP 客户端调用工具示例：
+Examples of calling tools using the MCP client:
 
 ```javascript
-// 压缩文件
+// Compress files
 await client.executeTool("compress", {
   input: "/path/to/files/or/directory",
   output: "/path/to/output.zip",
   options: {
     level: 9,
-    comment: "测试压缩",
+    comment: "Test compression",
     password: "secret",
     overwrite: true,
   },
 });
 
-// 解压文件
+// Decompress files
 await client.executeTool("decompress", {
   input: "/path/to/archive.zip",
   output: "/path/to/extract/directory",
@@ -168,7 +168,7 @@ await client.executeTool("decompress", {
   },
 });
 
-// 获取ZIP信息
+// Get ZIP info
 await client.executeTool("getZipInfo", {
   input: "/path/to/archive.zip",
   options: {
@@ -176,13 +176,13 @@ await client.executeTool("getZipInfo", {
   },
 });
 
-// 测试服务
+// Test service
 await client.executeTool("echo", {
   message: "Hello, ZIP MCP Server!",
 });
 ```
 
-## 联系方式
+## Contact
 
-- 邮箱: [gz7gugu@qq.com](mailto:gz7gugu@qq.com)
-- 播客: [https://7gugu.com](https://7gugu.com)
+- Email: [gz7gugu@qq.com](mailto:gz7gugu@qq.com)
+- Podcast: [https://7gugu.com](https://7gugu.com)

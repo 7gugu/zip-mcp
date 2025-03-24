@@ -22,8 +22,6 @@ zip-mcp
 │   ├── index.ts               # 应用程序入口点
 │   ├── utils
 │   │   └── compression.ts     # 压缩和解压缩功能实现
-│   └── types
-│       └── index.ts           # 类型定义
 ├── tsconfig.json              # TypeScript配置文件
 ├── package.json               # npm配置文件
 └── README.md                  # 项目文档

@@ -22,8 +22,6 @@ zip-mcp
 │   ├── index.ts               # Application entry point
 │   ├── utils
 │   │   └── compression.ts     # Compression and decompression implementation
-│   └── types
-│       └── index.ts           # Type definitions
 ├── tsconfig.json              # TypeScript configuration file
 ├── package.json               # npm configuration file
 └── README.md                  # Project documentation

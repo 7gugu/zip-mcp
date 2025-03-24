@@ -185,4 +185,4 @@ await client.executeTool("echo", {
 ## 联系方式
 
 - 邮箱: [gz7gugu@qq.com](mailto:gz7gugu@qq.com)
-- 播客: [https://7gugu.com](https://7gugu.com)
+- 博客: [https://7gugu.com](https://7gugu.com)

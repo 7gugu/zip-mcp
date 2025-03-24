@@ -185,4 +185,4 @@ await client.executeTool("echo", {
 ## Contact
 
 - Email: [gz7gugu@qq.com](mailto:gz7gugu@qq.com)
-- Podcast: [https://7gugu.com](https://7gugu.com)
+- Blog: [https://7gugu.com](https://7gugu.com)

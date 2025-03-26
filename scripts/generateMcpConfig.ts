@@ -7,7 +7,7 @@ const config = {
       "command": "npx",
       "args": [
         "tsx",
-        path.resolve(__dirname, 'src/index.ts')
+        path.resolve(__dirname, '../src/index.ts')
       ]
     }
   }

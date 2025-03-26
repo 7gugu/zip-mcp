@@ -135,8 +135,12 @@ server.addTool({
         }
       }
 
-      if(compressionOptions?.level && compressionOptions.level > 3) {
-        compressionOptions.level = 3;
+      if(compressionOptions?.level && compressionOptions.level > 9) {
+        compressionOptions.level = 9;
+      }
+
+      if(compressionOptions?.level && compressionOptions.level < 0) {
+        compressionOptions.level = 0;
       }
 
       // Execute compression

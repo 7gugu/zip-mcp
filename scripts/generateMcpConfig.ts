@@ -15,5 +15,5 @@ const config = {
 
 const configJson = JSON.stringify(config, null, 2);
 
-console.log('MCP 配置内容:');
+console.log('MCP Configuration Content:');
 console.log(configJson);

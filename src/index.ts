@@ -9,24 +9,24 @@ import {
 import * as fs from "fs/promises";
 import * as path from "path";
 
-// 创建 FastMCP 服务器实例
+// Create FastMCP server instance
 const server = new FastMCP({
   name: "ZIP MCP Server",
   version: "1.0.0",
 });
 
-// 通用错误处理函数
+// General error handling function
 const formatError = (error: unknown): string => {
   if (error instanceof Error) {
     return error.message;
   } else if (typeof error === "string") {
     return error;
   } else {
-    return "未知错误";
+    return "Unknown error";
   }
 };
 
-// 检查文件或目录是否存在
+// Check if file or directory exists
 const exists = async (filePath: string): Promise<boolean> => {
   try {
     await fs.access(filePath);
@@ -36,7 +36,7 @@ const exists = async (filePath: string): Promise<boolean> => {
   }
 };
 
-// 获取文件列表(包含子目录)
+// Get file list (including subdirectories)
 const getAllFiles = async (
   dirPath: string,
   fileList: string[] = [],
@@ -51,7 +51,7 @@ const getAllFiles = async (
     if (stat.isDirectory()) {
       fileList = await getAllFiles(filePath, fileList, basePath);
     } else {
-      // 存储相对路径
+      // Store relative path
       fileList.push(path.relative(basePath, filePath));
     }
   }
@@ -59,16 +59,16 @@ const getAllFiles = async (
   return fileList;
 };
 
-// 压缩工具 - 压缩本地文件
+// Compression tool - Compress local files
 server.addTool({
   name: "compress",
-  description: "将本地文件或目录压缩为ZIP文件",
+  description: "Compress local files or directories into a ZIP file",
   parameters: z.object({
     input: z.union([
-      z.string(), // 单个文件或目录路径
-      z.array(z.string()), // 多个文件或目录路径
+      z.string(), // Single file or directory path
+      z.array(z.string()), // Multiple file or directory paths
     ]),
-    output: z.string(), // 输出ZIP文件路径
+    output: z.string(), // Output ZIP file path
     options: z
       .object({
       level: z.number().min(0).max(9).optional(),
@@ -82,51 +82,51 @@ server.addTool({
     execute: async (args) => {
     try {
       const outputPath = args.output;
-      // 分离 CompressionOptions 和其他选项
+      // Separate CompressionOptions and other options
       const { overwrite, ...compressionOptions } = args.options || {};
       const shouldOverwrite = overwrite ?? false;
 
-      // 检查输出路径是否已存在
+      // Check if output path already exists
       if ((await exists(outputPath)) && !shouldOverwrite) {
         throw new Error(
-          `输出文件 ${outputPath} 已存在。设置 overwrite: true 以覆盖。`
+          `Output file ${outputPath} already exists. Set overwrite: true to overwrite.`
         );
       }
 
-      // 创建输出目录（如果不存在）
+      // Create output directory (if it doesn't exist)
       const outputDir = path.dirname(outputPath);
       if (!(await exists(outputDir))) {
         await fs.mkdir(outputDir, { recursive: true });
       }
 
-      // 准备输入文件
+      // Prepare input files
       const inputPaths = Array.isArray(args.input) ? args.input : [args.input];
       const filesToCompress: { name: string; data: Uint8Array }[] = [];
 
-      // 处理每个输入路径
+      // Process each input path
       for (const inputPath of inputPaths) {
         if (!(await exists(inputPath))) {
-          throw new Error(`找不到输入路径: ${inputPath}`);
+          throw new Error(`Input path not found: ${inputPath}`);
         }
 
         const stats = await fs.stat(inputPath);
 
         if (stats.isDirectory()) {
-          // 处理目录
+          // Process directory
           const baseDir = path.basename(inputPath);
           const files = await getAllFiles(inputPath);
 
           for (const relPath of files) {
             const fullPath = path.join(inputPath, relPath);
             const data = await fs.readFile(fullPath);
-            // 保持相对路径结构
+            // Maintain relative path structure
             filesToCompress.push({
               name: path.join(baseDir, relPath),
               data: new Uint8Array(data),
             });
           }
         } else {
-          // 处理单个文件
+          // Process single file
           const data = await fs.readFile(inputPath);
           filesToCompress.push({
             name: path.basename(inputPath),
@@ -139,35 +139,35 @@ server.addTool({
         compressionOptions.level = 3;
       }
 
-      // 执行压缩
+      // Execute compression
       const result = await compressData(filesToCompress, compressionOptions);
 
-      // 将结果写入文件
+      // Write result to file
       await fs.writeFile(outputPath, result);
 
       return {
         content: [
           {
             type: "text",
-            text: `压缩完成。已创建 ${outputPath} 文件，包含 ${filesToCompress.length} 个文件。`,
+            text: `Compression completed. Created ${outputPath} file containing ${filesToCompress.length} files.`,
           },
         ],
       };
     } catch (error) {
       return {
-        content: [{ type: "text", text: `压缩失败: ${formatError(error)}` }],
+        content: [{ type: "text", text: `Compression failed: ${formatError(error)}` }],
       };
     }
   },
 });
 
-// 解压工具 - 解压本地ZIP文件
+// Decompression tool - Decompress local ZIP file
 server.addTool({
   name: "decompress",
-  description: "解压本地ZIP文件到指定目录",
+  description: "Decompress local ZIP file to specified directory",
   parameters: z.object({
-    input: z.string(), // ZIP文件路径
-    output: z.string(), // 输出目录路径
+    input: z.string(), // ZIP file path
+    output: z.string(), // Output directory path
     options: z
       .object({
         password: z.string().optional(),
@@ -187,49 +187,49 @@ server.addTool({
       const overwrite = options.overwrite ?? false;
       const createDirectories = options.createDirectories ?? true;
 
-      // 检查输入文件是否存在
+      // Check if input file exists
       if (!(await exists(inputPath))) {
-        throw new Error(`找不到输入文件: ${inputPath}`);
+        throw new Error(`Input file not found: ${inputPath}`);
       }
 
-      // 检查输出目录
+      // Check output directory
       if (await exists(outputPath)) {
         const stats = await fs.stat(outputPath);
         if (!stats.isDirectory()) {
-          throw new Error(`输出路径不是目录: ${outputPath}`);
+          throw new Error(`Output path is not a directory: ${outputPath}`);
         }
       } else {
         if (createDirectories) {
           await fs.mkdir(outputPath, { recursive: true });
         } else {
-          throw new Error(`输出目录不存在: ${outputPath}`);
+          throw new Error(`Output directory does not exist: ${outputPath}`);
         }
       }
 
-      // 读取ZIP文件
+      // Read ZIP file
       const zipData = await fs.readFile(inputPath);
 
-      // 解压文件
+      // Decompress file
       const result = await decompressData(new Uint8Array(zipData), options);
 
-      // 解析文件到输出目录
+      // Extract files to output directory
       const extractedFiles: string[] = [];
       for (const file of result) {
         const outputFilePath = path.join(outputPath, file.name);
         const outputFileDir = path.dirname(outputFilePath);
 
-        // 创建目录（如果需要）
+        // Create directory (if needed)
         if (!(await exists(outputFileDir))) {
           await fs.mkdir(outputFileDir, { recursive: true });
         }
 
-        // 检查文件是否已存在
+        // Check if file already exists
         if ((await exists(outputFilePath)) && !overwrite) {
-          console.warn(`跳过已存在的文件: ${outputFilePath}`);
+          console.warn(`Skipping existing file: ${outputFilePath}`);
           continue;
         }
 
-        // 写入文件
+        // Write file
         await fs.writeFile(outputFilePath, file.data);
         extractedFiles.push(file.name);
       }
@@ -238,24 +238,24 @@ server.addTool({
         content: [
           {
             type: "text",
-            text: `解压完成。已将 ${extractedFiles.length} 个文件解压到 ${outputPath}`,
+            text: `Decompression completed. Extracted ${extractedFiles.length} files to ${outputPath}`,
           },
         ],
       };
     } catch (error) {
       return {
-        content: [{ type: "text", text: `解压失败: ${formatError(error)}` }],
+        content: [{ type: "text", text: `Decompression failed: ${formatError(error)}` }],
       };
     }
   },
 });
 
-// 获取 ZIP 信息工具 - 获取本地ZIP文件信息
+// Get ZIP info tool - Get local ZIP file information
 server.addTool({
   name: "getZipInfo",
-  description: "获取本地ZIP文件的元数据信息",
+  description: "Get metadata information of a local ZIP file",
   parameters: z.object({
-    input: z.string(), // ZIP文件路径
+    input: z.string(), // ZIP file path
     options: z
       .object({
         password: z.string().optional(),
@@ -267,15 +267,15 @@ server.addTool({
       const inputPath = args.input;
       const options: DecompressionOptions = args.options || {};
 
-      // 检查输入文件是否存在
+      // Check if input file exists
       if (!(await exists(inputPath))) {
-        throw new Error(`找不到输入文件: ${inputPath}`);
+        throw new Error(`Input file not found: ${inputPath}`);
       }
 
-      // 读取ZIP文件
+      // Read ZIP file
       const zipData = await fs.readFile(inputPath);
 
-      // 获取ZIP信息
+      // Get ZIP information
       const metadata = await getZipInfo(new Uint8Array(zipData), options);
 
       const compressionRatio =
@@ -286,7 +286,7 @@ server.addTool({
             ).toFixed(2) + "%"
           : "0%";
 
-      // 文件大小格式化
+      // File size formatting
       const formatSize = (size: number): string => {
         if (size < 1024) return `${size} B`;
         if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
@@ -295,15 +295,15 @@ server.addTool({
         return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
       };
 
-      // 构建文件信息文本
+      // Build file information text
       const filesInfo = metadata.files
         .map(
           (file) =>
-            `- ${file.filename}: 原始大小=${formatSize(
+            `- ${file.filename}: Original size=${formatSize(
               file.size
-            )}, 压缩后=${formatSize(file.compressedSize)}, 修改日期=${new Date(
+            )}, Compressed=${formatSize(file.compressedSize)}, Modified date=${new Date(
               file.lastModDate
-            ).toLocaleString()}, 加密=${file.encrypted ? "是" : "否"}`
+            ).toLocaleString()}, Encrypted=${file.encrypted ? "Yes" : "No"}`
         )
         .join("\n");
 
@@ -311,36 +311,36 @@ server.addTool({
         content: [
           {
             type: "text",
-            text: `ZIP文件 "${path.basename(inputPath)}" 信息概览：`,
+            text: `ZIP file "${path.basename(inputPath)}" information overview:`,
           },
-          { type: "text", text: `总文件数: ${metadata.files.length}` },
-          { type: "text", text: `总大小: ${formatSize(metadata.totalSize)}` },
+          { type: "text", text: `Total files: ${metadata.files.length}` },
+          { type: "text", text: `Total size: ${formatSize(metadata.totalSize)}` },
           {
             type: "text",
-            text: `压缩后大小: ${formatSize(metadata.totalCompressedSize)}`,
+            text: `Compressed size: ${formatSize(metadata.totalCompressedSize)}`,
           },
-          { type: "text", text: `压缩率: ${compressionRatio}` },
+          { type: "text", text: `Compression ratio: ${compressionRatio}` },
           {
             type: "text",
-            text: metadata.comment ? `注释: ${metadata.comment}` : "",
+            text: metadata.comment ? `Comment: ${metadata.comment}` : "",
           },
-          { type: "text", text: `\n文件详情:\n${filesInfo}` },
+          { type: "text", text: `\nFile details:\n${filesInfo}` },
         ],
       };
     } catch (error) {
       return {
         content: [
-          { type: "text", text: `获取ZIP信息失败: ${formatError(error)}` },
+          { type: "text", text: `Failed to get ZIP information: ${formatError(error)}` },
         ],
       };
     }
   },
 });
 
-// 测试工具 - 简单的 echo 功能，用于测试服务是否正常运行
+// Test tool - Simple echo function to test if the service is running properly
 server.addTool({
   name: "echo",
-  description: "返回输入的消息 (用于测试)",
+  description: "Return the input message (for testing)",
   parameters: z.object({
     message: z.string(),
   }),
@@ -354,9 +354,9 @@ server.addTool({
   },
 });
 
-// 启动服务器
+// Start server
 server.start({
   transportType: "stdio",
 });
 
-console.log("ZIP MCP Server 已启动");
+console.log("ZIP MCP Server started");

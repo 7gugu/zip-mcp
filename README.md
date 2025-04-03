@@ -4,6 +4,10 @@
 
 ## Project Introduction
 
+<a href="https://glama.ai/mcp/servers/@7gugu/zip-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@7gugu/zip-mcp/badge" />
+</a>
+
 ZIP MCP Server is a compression server based on fastMCP and zip.js, implementing the Model Context Protocol (MCP). This project provides fully parameter-controlled ZIP compression, decompression, and query compression package information functions.
 
 ## Features

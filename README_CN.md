@@ -4,6 +4,10 @@
 
 ## 项目简介
 
+<a href="https://glama.ai/mcp/servers/@7gugu/zip-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@7gugu/zip-mcp/badge" />
+</a>
+
 ZIP MCP Server 是一个基于 fastMCP 和 zip.js 的压缩服务器，实现了 Model Context Protocol (MCP) 协议。本项目提供了全参数可控的 ZIP 压缩、解压缩和查询压缩包信息功能。
 
 ## 功能特点

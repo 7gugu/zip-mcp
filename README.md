@@ -43,7 +43,8 @@ After installation, you can configure ZIP MCP in your MCP JSON configuration:
 {
   "mcpServers": {
     "zip-mcp": {
-      "command": "zip-mcp"
+      "command": "zip-mcp",
+      "args": []
     }
   }
 }

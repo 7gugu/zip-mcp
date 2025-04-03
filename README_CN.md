@@ -43,7 +43,8 @@ npm install -g zip-mcp
 {
   "mcpServers": {
     "zip-mcp": {
-      "command": "zip-mcp"
+      "command": "zip-mcp",
+      "args": []
     }
   }
 }

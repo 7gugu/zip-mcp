@@ -16,7 +16,7 @@ ZIP MCP Server is a compression server based on fastMCP and zip.js, implementing
 
 ## Project Structure
 
-```
+```bash
 zip-mcp
 ├── src
 │   ├── index.ts               # Application entry point
@@ -27,45 +27,33 @@ zip-mcp
 └── README.md                  # Project documentation
 ```
 
-## Installation and Usage
+## Installation
 
-1. Clone the project:
+You can install ZIP MCP Server globally using npm:
 
-   ```bash
-   git clone <repository-url>
-   cd zip-mcp
-   ```
+```bash
+npm install -g zip-mcp
+```
 
-2. Install dependencies:
+## MCP Configuration
 
-   ```bash
-   npm install
-   ```
+After installation, you can configure ZIP MCP in your MCP JSON configuration:
 
-3. Generate MCP JSON:
-
-    ```bash
-    npm run json
-    ```
-
-    ```JSON
-    {
-      "mcpServers": {
-        "zip-mcp": {
-          "command": "npx",
-          "args": [
-            "tsx",
-            "<ABSOLUTE PATH>src/index.ts"
-          ]
-        }
-      }
+```json
+{
+  "mcpServers": {
+    "zip-mcp": {
+      "command": "zip-mcp"
     }
-    ```
+  }
+}
+```
 
-4. Configure the MCP JSON in the AI Client
+## Configure the MCP JSON in the AI Client
 
-- Claude Client https://modelcontextprotocol.io/quickstart/user
-- Raycast requires installing the MCP plugin
+- Claude Client: [https://modelcontextprotocol.io/quickstart/user](https://modelcontextprotocol.io/quickstart/user)
+- Raycast: requires installing the MCP plugin
+- Cursor: [https://docs.cursor.com/context/model-context-protocol#configuring-mcp-servers](https://docs.cursor.com/context/model-context-protocol#configuring-mcp-servers)
 
 ## MCP Tool Description
 

@@ -16,7 +16,7 @@ ZIP MCP Server 是一个基于 fastMCP 和 zip.js 的压缩服务器，实现了
 
 ## 项目结构
 
-```
+```bash
 zip-mcp
 ├── src
 │   ├── index.ts               # 应用程序入口点
@@ -27,45 +27,33 @@ zip-mcp
 └── README.md                  # 项目文档
 ```
 
-## 安装与使用
+## 安装
 
-1. 克隆项目：
+您可以通过 npm 全局安装 ZIP MCP Server：
 
-   ```bash
-   git clone <repository-url>
-   cd zip-mcp
-   ```
+```bash
+npm install -g zip-mcp
+```
 
-2. 安装依赖：
+## MCP 配置
 
-   ```bash
-   npm install
-   ```
+安装后，您可以在 MCP JSON 配置文件中配置 ZIP MCP：
 
-3. 生成 MCP JSON：
-
-    ```bash
-    npm run json
-    ```
-
-    ```JSON
-    {
-      "mcpServers": {
-        "zip-mcp": {
-          "command": "npx",
-          "args": [
-            "tsx",
-            "<ABSOLUTE PATH>src/index.ts"
-          ]
-        }
-      }
+```json
+{
+  "mcpServers": {
+    "zip-mcp": {
+      "command": "zip-mcp"
     }
-    ```
+  }
+}
+```
 
-4. 将 MCP JSON 配置到 AI Client 中
+## 将 MCP JSON 配置到 AI 客户端 中
 
-- Claude Client https://modelcontextprotocol.io/quickstart/user
-- Raycast 需要安装 MCP 插件
+- Claude 客户端: [https://modelcontextprotocol.io/quickstart/user](https://modelcontextprotocol.io/quickstart/user)
+- Raycast: 需要安装 MCP 插件
+- Cursor: [https://docs.cursor.com/context/model-context-protocol#configuring-mcp-servers](https://docs.cursor.com/context/model-context-protocol#configuring-mcp-servers)
 
 ## MCP 工具说明
 

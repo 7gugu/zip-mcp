@@ -5,7 +5,8 @@ import {
   decompressData,
   getZipInfo,
   DecompressionOptions,
-} from "./utils/compression";
+  ZipInfo,
+} from "./utils/compression.js";
 import * as fs from "fs/promises";
 import * as path from "path";
 
@@ -302,7 +303,7 @@ server.addTool({
       // Build file information text
       const filesInfo = metadata.files
         .map(
-          (file) =>
+          (file: ZipInfo) =>
             `- ${file.filename}: Original size=${formatSize(
               file.size
             )}, Compressed=${formatSize(file.compressedSize)}, Modified date=${new Date(

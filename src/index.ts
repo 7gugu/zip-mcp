@@ -5,14 +5,15 @@ import {
   decompressData,
   getZipInfo,
   DecompressionOptions,
-} from "./utils/compression";
+  ZipInfo,
+} from "./utils/compression.js";
 import * as fs from "fs/promises";
 import * as path from "path";
 
 // Create FastMCP server instance
 const server = new FastMCP({
   name: "ZIP MCP Server",
-  version: "1.0.0",
+  version: "1.0.3",
 });
 
 // General error handling function
@@ -302,7 +303,7 @@ server.addTool({
       // Build file information text
       const filesInfo = metadata.files
         .map(
-          (file) =>
+          (file: ZipInfo) =>
             `- ${file.filename}: Original size=${formatSize(
               file.size
             )}, Compressed=${formatSize(file.compressedSize)}, Modified date=${new Date(

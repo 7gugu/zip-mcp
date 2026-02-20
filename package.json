@@ -40,5 +40,6 @@
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0"
-  }
+  },
+  "type": "module"
 }

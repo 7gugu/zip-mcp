@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/7gugu-zip-mcp-badge.png)](https://mseep.ai/app/7gugu-zip-mcp)
+
 # ZIP MCP Server
 
 [中文](README_CN.md) | English

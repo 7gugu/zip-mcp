@@ -17,6 +17,13 @@ ZIP MCP Server 是一个基于 fastMCP 和 zip.js 的压缩服务器，实现了
 - 提供压缩级别控制 (0-9)
 - 支持密码保护和加密强度设置
 - 提供压缩包元数据查询功能
+- 解压时校验 ZIP 条目路径，防止路径穿越写入
+
+## 安全说明
+
+**1.0.6** 及以上版本已修复 `decompress` 工具的任意文件写入问题：恶意 ZIP 条目名（例如 `../outside.txt`）此前可能与输出目录拼接后写到解压根目录之外。现在会先解析输出根目录，校验每个条目路径，并拒绝绝对路径、盘符路径、`..` 段以及任何会逃出输出目录的路径。
+
+感谢 **Ryan**（[vonbrubeck@gmail.com](mailto:vonbrubeck@gmail.com)）负责任地报告该问题。
 
 ## 项目结构
 
@@ -25,7 +32,8 @@ zip-mcp
 ├── src
 │   ├── index.ts               # 应用程序入口点
 │   ├── utils
-│   │   └── compression.ts     # 压缩和解压缩功能实现
+│   │   ├── compression.ts     # 压缩和解压缩功能实现
+│   │   └── safePath.ts        # 安全的 ZIP 条目路径校验
 ├── tsconfig.json              # TypeScript配置文件
 ├── package.json               # npm配置文件
 └── README.md                  # 项目文档
@@ -85,7 +93,7 @@ ZIP MCP Server 提供了以下工具，可通过 MCP 协议调用：
 
 ### 解压工具 (decompress)
 
-解压本地 ZIP 文件到指定目录。
+解压本地 ZIP 文件到指定目录。写入前会校验条目路径，无法通过 `..` 或绝对路径将文件解压到 `output` 目录之外。
 
 **参数:**
 

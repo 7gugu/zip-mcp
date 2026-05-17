@@ -9,6 +9,7 @@ import {
 } from "./utils/compression.js";
 import * as fs from "fs/promises";
 import * as path from "path";
+import { assertSafeZipEntryPath } from "./utils/safePath.js";
 
 // Create FastMCP server instance
 const server = new FastMCP({
@@ -218,9 +219,10 @@ server.addTool({
       const result = await decompressData(new Uint8Array(zipData), options);
 
       // Extract files to output directory
+      const resolvedOutputRoot = path.resolve(outputPath);
       const extractedFiles: string[] = [];
       for (const file of result) {
-        const outputFilePath = path.join(outputPath, file.name);
+        const outputFilePath = assertSafeZipEntryPath(resolvedOutputRoot, file.name);
         const outputFileDir = path.dirname(outputFilePath);
 
         // Create directory (if needed)

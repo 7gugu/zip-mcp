@@ -17,6 +17,13 @@ ZIP MCP Server is a compression server based on fastMCP and zip.js, implementing
 - Provides compression level control (0-9)
 - Supports password protection and encryption strength settings
 - Provides query function for compressed package metadata
+- Validates ZIP entry paths on decompression to prevent path traversal writes
+
+## Security
+
+Versions **1.0.6** and later fix an arbitrary file write issue in the `decompress` tool: malicious ZIP entry names (for example `../outside.txt`) could previously be joined with the output directory and written outside the intended extraction root. Extraction now resolves the output root once, validates each entry path, and rejects absolute paths, drive-letter paths, `..` segments, and any path that would escape the output directory.
+
+Thanks to **Ryan** ([vonbrubeck@gmail.com](mailto:vonbrubeck@gmail.com)) for responsibly reporting this issue.
 
 ## Project Structure
 
@@ -25,7 +32,8 @@ zip-mcp
 ├── src
 │   ├── index.ts               # Application entry point
 │   ├── utils
-│   │   └── compression.ts     # Compression and decompression implementation
+│   │   ├── compression.ts     # Compression and decompression implementation
+│   │   └── safePath.ts        # Safe ZIP entry path validation
 ├── tsconfig.json              # TypeScript configuration file
 ├── package.json               # npm configuration file
 └── README.md                  # Project documentation
@@ -85,7 +93,7 @@ Compress local files or directories into a ZIP file.
 
 ### Decompression Tool (decompress)
 
-Decompress local ZIP files to the specified directory.
+Decompress local ZIP files to the specified directory. Entry paths are validated before writing so files cannot be extracted outside `output` via `..` or absolute paths.
 
 **Parameters:**
 

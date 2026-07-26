@@ -1,6 +1,6 @@
 {
   "name": "zip-mcp",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A Model Context Protocol server for ZIP compression using fastMCP and zip.js",
   "main": "dist/index.js",
   "bin": {
@@ -19,7 +19,9 @@
   },
   "dependencies": {
     "@zip.js/zip.js": "^2.7.57",
-    "fastmcp": "^1.20.5"
+    "fastmcp": "^3.35.0",
+    "jose": "^5.10.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^22.13.11",

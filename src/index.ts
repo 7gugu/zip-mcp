@@ -14,7 +14,7 @@ import { assertSafeZipEntryPath } from "./utils/safePath.js";
 // Create FastMCP server instance
 const server = new FastMCP({
   name: "ZIP MCP Server",
-  version: "1.0.3",
+  version: "1.0.7",
 });
 
 // General error handling function
